@@ -1,8 +1,8 @@
 version: "3"
 services:
   web:
-    # replace username/repo:tag with your name and image details
     image: ds/nginx
+    hostname: web
     volumes:
       - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "./etc/ssl:/etc/ssl"
@@ -16,6 +16,7 @@ services:
       - webnet
   php:
     image: ds/php
+    hostname: php
     tty: true
     stdin_open: true
     ports:
@@ -28,6 +29,7 @@ services:
         - webnet
   mysqldb:
     image: ds/mysql
+    hostname: mysqldb
     volumes:
       - "./web/db/mysql:/var/lib/mysql"
     ports:
@@ -41,18 +43,5 @@ services:
       driver: json-file
     networks:
       - webnet
-  # myadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   container_name: phpmyadmin
-  #   ports:
-  #       - "8080:80"
-  #   environment:
-  #       - PMA_ARBITRARY=1
-  #       - PMA_HOST=${MYSQL_HOST}
-  #   restart: always
-  #   depends_on:
-  #       - mysqldb
-  #   networks:
-  #       - webnet
 networks:
   webnet:
