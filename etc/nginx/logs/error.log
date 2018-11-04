@@ -1,0 +1,2 @@
+2018/09/23 16:53:17 [warn] 1#1: conflicting server name "magento2.dev" on 0.0.0.0:80, ignored
+2018/09/23 16:54:15 [warn] 1#1: conflicting server name "localhost" on 0.0.0.0:80, ignored

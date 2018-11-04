@@ -1,0 +1,58 @@
+version: "3"
+services:
+  web:
+    # replace username/repo:tag with your name and image details
+    image: ds/nginx
+    volumes:
+      - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
+      - "./etc/ssl:/etc/ssl"
+      - "./web:/var/www/html"
+      - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
+    ports:
+      - "4000:80"
+    logging:
+      driver: json-file
+    networks:
+      - webnet
+  php:
+    image: ds/php
+    tty: true
+    stdin_open: true
+    ports:
+        - "9000:9000"
+    volumes:
+        - "./web:/var/www/html"
+    logging:
+      driver: json-file
+    networks:
+        - webnet
+  mysqldb:
+    image: ds/mysql
+    volumes:
+      - "./web/db/mysql:/var/lib/mysql"
+    ports:
+      - "8989:3306"
+    environment:
+      - MYSQL_DATABASE=magento
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=dev
+    logging:
+      driver: json-file
+    networks:
+      - webnet
+  # myadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin
+  #   ports:
+  #       - "8080:80"
+  #   environment:
+  #       - PMA_ARBITRARY=1
+  #       - PMA_HOST=${MYSQL_HOST}
+  #   restart: always
+  #   depends_on:
+  #       - mysqldb
+  #   networks:
+  #       - webnet
+networks:
+  webnet:
