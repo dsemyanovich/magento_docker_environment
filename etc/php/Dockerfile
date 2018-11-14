@@ -32,7 +32,8 @@ RUN apk add --no-cache php7 \
     php7-xmlwriter \
     php7-cgi \
     php7-tokenizer \
-    php7-session
+    php7-session \
+    php7-xdebug
 
 #
 #COPY docker-php-entrypoint /usr/local/bin/
@@ -70,6 +71,7 @@ COPY docker-php-entrypoint /usr/local/bin/
 ENTRYPOINT ["docker-php-entrypoint"]
 
 ADD php.ini /etc/php7/conf.d/40-custom.ini
+ADD xdebug.ini /etc/php7/conf.d/40-xdebug.ini
 
 WORKDIR /var/www/html
 
